@@ -1,0 +1,49 @@
+variable,description
+permno,"Firm identifier (Datastream name, from source panel)"
+firm_id,"Integer firm code (1..N, sorted permno)"
+exchange,Exchange
+fyear,Fiscal year of target quarter
+fqtr,Fiscal quarter (1-4)
+fperiod,"Fiscal period label, e.g. 2008Q1"
+ann_date,Announcement date of target EPS (date_qk)
+lag_days,Days from fiscal quarter end to announcement
+date_flag,Announcement-date quality flag
+eps_actual,"Actual standalone quarterly EPS (CNY, adjusted)"
+eps_lag4,EPS same quarter previous year
+h_avail,Quarters back to latest EPS public before ann_date
+lag1_avail,EPS(q-1) public before ann_date
+f_rw,M1 forecast: seasonal random walk
+f_rwd,M2 forecast: SRW with drift
+f_foster,"M3 forecast: Foster seasonal AR(1), firm OLS"
+f_xgb,M4 forecast: XGBoost (pooled)
+f_foster_pooled,Robustness: Foster with pooled phi
+e_rw,Error M1 = actual - forecast (UE)
+e_rwd,Error M2 = actual - forecast (UE)
+e_foster,Error M3 = actual - forecast (UE)
+e_xgb,Error M4 = actual - forecast (UE)
+e_foster_pooled,Error Foster pooled phi
+avail_rw,M1 forecast available
+avail_rwd,M2 forecast available
+avail_foster,M3 forecast available
+avail_xgb,M4 forecast available
+avail_foster_pooled,Foster pooled-phi forecast available
+common,In common evaluation sample (M1-M4)
+est_cutoff,Estimation cutoff M (1st day of ann. month)
+win_start,First fiscal quarter of training window
+win_end,Last fiscal quarter of training window
+n_eps_window,Firm EPS in window public before ann_date
+n_ds_drift,YoY changes used for drift (M2)
+n_pairs_foster,Foster regression pairs (M3)
+drift_mu,Estimated drift (M2)
+foster_alpha,Foster intercept (M3)
+foster_phi,"Foster phi (M3, capped)"
+foster_phi_capped,"Foster OLS phi outside [-1,1]"
+foster_h,Foster step: 1 or 2 (EPS q-1 not public)
+foster_pooled_phi,Pooled phi of the window (robustness)
+scale_hist,Hist. EPS scale (mean |EPS| 8q)
+xgb_n_train,XGBoost training rows
+xgb_n_train_firms,XGBoost training firms
+xgb_train_max_ann,Latest announcement in XGBoost training set
+xgb_tune_year,XGBoost tuning year
+max_input_date,Latest announcement among forecast inputs
+max_est_date,Latest announcement among estimation data

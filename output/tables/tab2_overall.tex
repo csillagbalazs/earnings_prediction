@@ -1,0 +1,26 @@
+\begin{tabular}{lrrrrrr}
+\toprule
+& MAE & RMSE & \%$\Delta$MAE & \%$\Delta$RMSE & MedAE & \%$\Delta$sMAE \\
+\midrule
+\multicolumn{7}{l}{\emph{Panel A: common sample (N = 95,732)}} \\
+SRW & 0.0860 & 0.4791 & -- & -- & 0.0250 & -- \\
+SRW + drift & 0.0933 & 0.5006 & $-$8.4*** & $-$4.5* & 0.0287 & $-$9.5 \\
+Foster & 0.0986 & 0.6211 & $-$14.6*** & $-$29.6 & 0.0293 & $-$11.8 \\
+XGBoost & 0.0681 & 0.3906 & 20.8*** & 18.5* & 0.0225 & 14.0 \\
+\midrule
+\multicolumn{7}{l}{\emph{Panel B: trimmed common sample (N = 94,774)}} \\
+SRW & 0.0641 & 0.1328 & -- & -- & 0.0250 & -- \\
+SRW + drift & 0.0703 & 0.1415 & $-$9.6*** & $-$6.6*** & 0.0282 & $-$10.4 \\
+Foster & 0.0727 & 0.1460 & $-$13.4*** & $-$10.0*** & 0.0288 & $-$12.8 \\
+XGBoost & 0.0527 & 0.1093 & 17.8*** & 17.7*** & 0.0221 & 14.3 \\
+\midrule
+\multicolumn{7}{l}{\emph{Panel C: model-specific samples (each vs.\ SRW on the same forecasts; last column = N)}} \\
+SRW & 0.0810 & 0.4411 & -- & -- & 0.0240 & 117,902 \\
+SRW + drift & 0.0906 & 0.4761 & $-$8.6 & $-$4.6 & 0.0280 & 109,129 \\
+Foster & 0.0986 & 0.6211 & $-$14.6 & $-$29.6 & 0.0293 & 95,732 \\
+XGBoost & 0.0648 & 0.3598 & 20.1 & 18.4 & 0.0216 & 117,902 \\
+\midrule
+\multicolumn{7}{l}{\emph{Panel D: robustness, Foster with pooled $\phi$ (common sample)}} \\
+Foster, pooled $\phi$ & 0.0925 & 0.5091 & $-$7.5 & $-$6.3 & 0.0282 & $-$8.0 \\
+\bottomrule
+\end{tabular}

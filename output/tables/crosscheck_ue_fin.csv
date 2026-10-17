@@ -1,0 +1,6 @@
+,0
+targets with unique announcement date and M1 forecast,106093.0
+matched to masterdata announcement rows,74390.0
+"identical UE (|diff| < 1e-6), %",100.0
+correlation,0.9999999999999984
+median |diff| among mismatches,

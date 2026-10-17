@@ -1,0 +1,16 @@
+name: eps-forecast
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy=1.26
+  - pandas=2.2
+  - scipy
+  - statsmodels=0.14
+  - xgboost>=2.1
+  - matplotlib=3.9
+  - pyarrow
+  - jupyter
+  - nbconvert
+  - nbformat
+  - ipykernel
