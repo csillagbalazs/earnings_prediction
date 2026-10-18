@@ -118,6 +118,23 @@ training target is winsorized with training-set quantiles. Hyperparameters are r
 available then: training targets announced in the previous year form the validation set, and earlier ones the fit set.
 \end{itemize}
 
+Figure~\ref{fig:rolling-design} illustrates the design. ``Rolling'' means that, when the target advances by one
+fiscal quarter, the oldest quarter leaves the estimation window and the newest one enters. ``Out of sample'' means
+that the target's realized EPS is withheld until after its forecast has been saved. The two cutoffs serve different
+purposes: model parameters use outcomes public before the announcement month begins, while the forecast's inputs
+can incorporate earnings released later in that month, up to the day before the target announcement.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{fig_rolling_oos_design.pdf}
+\caption{Rolling out-of-sample forecasting: an illustrative example. For a 2020Q2 target announced on 28 August,
+the eligible estimation quarters are 2017Q2--2020Q1, and only training outcomes published before 1 August are used.
+The forecast uses inputs public before 28 August. For a 2020Q3 target, the window advances to 2017Q3--2020Q2.
+Blue quarters indicate eligibility, not guaranteed availability. Parameter estimation applies to drift, Foster and
+XGBoost; the seasonal random walk simply uses the same quarter's EPS from the previous year.}
+\label{fig:rolling-design}
+\end{figure}
+
 \paragraph{Leakage controls.} The notebook verifies four things:
 \begin{enumerate}
 \item every input and estimation datum predates its cutoff;
@@ -156,8 +173,13 @@ predictable component.
 \begin{table}[!htbp]
 \centering\small
 \caption{Forecast accuracy. MAE, RMSE and MedAE are in CNY per share. $\%\Delta$ is the improvement relative to the
-SRW (positive = better); sMAE scales each absolute error by the firm's historical EPS scale. Panel B removes the 1\%
-of forecasts with the largest absolute error of \emph{any} model. Stars: significance of the mean loss differential,
+SRW (positive = better); sMAE scales each absolute error by the firm's historical EPS scale. Panel A uses only
+observations with forecasts from all four models. Panel B removes the 1\% of these observations with the largest
+absolute error of \emph{any} model. Panel C uses each model's full available sample, without trimming or requiring
+forecasts from the other models; its last column reports the observation count $N$, replacing $\%\Delta$sMAE.
+Each Panel C improvement compares the model with the SRW evaluated on that model's own sample, so error levels
+across rows need not refer to identical observations; Panel A provides the common-sample comparison.
+Stars: significance of the mean loss differential,
 two-way clustered by firm and fiscal quarter (*** 1\%, ** 5\%, * 10\%).}
 \label{tab:overall}
 \resizebox{\textwidth}{!}{\input{../output/tables/tab2_overall.tex}}
@@ -224,6 +246,8 @@ sample.}
 
 \section{Firm-level heterogeneity}
 
+\input{../output/tables/economic_error_context.tex}
+
 Firm-level comparisons use the \NFirmsFL{} firms with at least 12 common-sample forecasts (three years).
 Table~\ref{tab:firm} and Figures~\ref{fig:firmhist}--\ref{fig:conc} show that XGBoost's gain is broad-based. It
 beats the SRW for \FirmBetterxgb\% of firms by MAE (\FirmBetterRMSExgb\% by RMSE), and the median firm-level
@@ -257,6 +281,41 @@ median).}
 \caption{(a) Firm-level MAE by model. (b) Cumulative contribution of firms, sorted by their contribution, to the
 aggregate MAE reduction relative to the SRW (end point = aggregate MAE change).}
 \label{fig:conc}
+\end{figure}
+
+\paragraph{Actual and predicted EPS for selected firms.} Figures~\ref{fig:examples-best}--\ref{fig:examples-random}
+plot realized quarterly EPS and the four out-of-sample forecasts. ``Best'' and ``worst'' mean the largest and smallest
+firm-level percentage MAE improvement of XGBoost over the SRW, among firms with at least 12 common-sample forecasts;
+they do not rank firms by their absolute forecast errors. The four random firms are sampled without replacement
+from the remaining eligible firms using seed 42. All plotted observations belong to the untrimmed common sample.
+The horizontal axis is the target fiscal quarter, not the announcement date; missing quarters appear as gaps.
+Each firm has its own vertical scale, shared by actual EPS and all four models, with no clipping of extreme values.
+The extreme examples are selected using realized forecast performance and illustrate heterogeneity rather than
+providing an independent test of predictability.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig_firm_forecasts_best.pdf}
+\caption{Actual and predicted quarterly EPS: the four firms with the largest percentage MAE improvement of
+XGBoost over the SRW. Each subplot shows the firm's common-sample observation count and MAE improvement;
+a positive improvement means XGBoost is more accurate.}
+\label{fig:examples-best}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig_firm_forecasts_worst.pdf}
+\caption{Actual and predicted quarterly EPS: the four firms with the smallest percentage MAE improvement of
+XGBoost over the SRW. Negative improvements indicate that XGBoost has higher MAE than the SRW.}
+\label{fig:examples-worst}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{fig_firm_forecasts_random.pdf}
+\caption{Actual and predicted quarterly EPS: four randomly selected firms from the eligible sample after excluding
+the eight extreme examples (seed 42). Selection is unrelated to these firms' forecast ranking within that remaining sample.}
+\label{fig:examples-random}
 \end{figure}
 
 \section{Discussion and conclusion}

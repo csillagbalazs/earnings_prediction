@@ -1,0 +1,12 @@
+\paragraph{Error size in context.} On the untrimmed common sample, XGBoost's MAE is
+0.0681 CNY per share, against 0.0860 for the SRW. Total absolute error divided by
+total absolute realized EPS is 65.1\% for XGBoost and
+82.2\% for the SRW. This is an aggregate ratio, not the average observation's
+percentage error. Using each observation's historical EPS scale instead, the mean absolute scaled error is
+98.4\% versus 114.4\%; the median is
+40.1\% versus 44.9\%.
+The historical scale is the mean absolute EPS known before the announcement within the preceding eight fiscal
+quarters, floored at 0.01 CNY per share. Direct percentage errors relative to actual EPS are unsuitable here:
+980 observations have zero EPS, and near-zero EPS makes such ratios unstable.
+Thus XGBoost improves materially on the benchmark, but the remaining errors are large relative to earnings.
+Forecast accuracy alone does not establish an improvement in investment returns or in the measurement of market expectations.
