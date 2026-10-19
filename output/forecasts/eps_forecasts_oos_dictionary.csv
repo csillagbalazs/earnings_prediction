@@ -27,7 +27,7 @@ avail_rwd,M2 forecast available
 avail_foster,M3 forecast available
 avail_xgb,M4 forecast available
 avail_foster_pooled,Foster pooled-phi forecast available
-common,In common evaluation sample (M1-M4)
+common,"In common evaluation sample (M1-M4 available, FY2005+)"
 est_cutoff,Estimation cutoff M (1st day of ann. month)
 win_start,First fiscal quarter of training window
 win_end,Last fiscal quarter of training window
@@ -45,5 +45,6 @@ xgb_n_train,XGBoost training rows
 xgb_n_train_firms,XGBoost training firms
 xgb_train_max_ann,Latest announcement in XGBoost training set
 xgb_tune_year,XGBoost tuning year
+xgb_tuned,XGBoost params tuned (1) or fixed a priori (0)
 max_input_date,Latest announcement among forecast inputs
 max_est_date,Latest announcement among estimation data

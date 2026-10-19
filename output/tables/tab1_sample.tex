@@ -1,14 +1,23 @@
-\begin{tabular}{lrrr}
+\begin{tabular}{lrrrl}
 \toprule
-& Firm-quarters & \% of targets & Firms \\
+& Firm-quarters & \% of targets & Firms & First forecast \\
 \midrule
-Evaluation targets (FY2005Q1--FY2021Q1) & 127,454 & 100.0 & 3,383 \\
-M1 SRW: $EPS_{q-4}$ public before $A$ & 117,902 & 92.5 & 3,120 \\
-M2 SRW + drift: $\geq$4 YoY changes & 109,129 & 85.6 & 2,970 \\
-M3 Foster: $\geq$8 pairs & 95,732 & 75.1 & 2,751 \\
-M4 XGBoost & 117,902 & 92.5 & 3,120 \\
-Foster, pooled $\phi$: $\geq$4 pairs & 105,786 & 83.0 & 2,923 \\
-Common sample (M1--M4 all available) & 95,732 & 75.1 & 2,751 \\
-Firms with $\geq$12 common-sample forecasts & 92,584 & 72.6 & 2,124 \\
+\multicolumn{5}{l}{\emph{Panel A: comparison period, FY2005Q1--FY2021Q1}} \\
+Targets (FY2005Q1--FY2021Q1) & 127,454 & 100.0 & 3,383 &  \\
+M1 SRW: $EPS_{q-4}$ public before $A$ & 117,902 & 92.5 & 3,120 &  \\
+M2 SRW + drift: $\geq$4 YoY changes & 109,129 & 85.6 & 2,970 &  \\
+M3 Foster: $\geq$8 pairs & 95,732 & 75.1 & 2,751 &  \\
+M4 XGBoost: $\geq$1,000 training rows & 117,902 & 92.5 & 3,120 &  \\
+Foster, pooled $\phi$: $\geq$4 pairs & 105,786 & 83.0 & 2,923 &  \\
+Common sample (M1--M4 all available) & 95,732 & 75.1 & 2,751 &  \\
+Firms with $\geq$12 common-sample forecasts & 92,584 & 72.6 & 2,124 &  \\
+\midrule
+\multicolumn{5}{l}{\emph{Panel B: full forecast period (each model as early as its data allow)}} \\
+Targets (FY1994Q1--FY2021Q1) & 137,116 & 100.0 & 3,397 &  \\
+M1 SRW: $EPS_{q-4}$ public before $A$ & 123,092 & 89.8 & 3,129 & 1996Q2 \\
+M2 SRW + drift: $\geq$4 YoY changes & 113,106 & 82.5 & 2,977 & 2002Q2 \\
+M3 Foster: $\geq$8 pairs & 96,091 & 70.1 & 2,751 & 2003Q4 \\
+M4 XGBoost: $\geq$1,000 training rows & 121,496 & 88.6 & 3,129 & 2004Q1 \\
+Foster, pooled $\phi$: $\geq$4 pairs & 108,424 & 79.1 & 2,928 & 2003Q3 \\
 \bottomrule
 \end{tabular}

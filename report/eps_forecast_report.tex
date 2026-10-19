@@ -34,7 +34,9 @@ a Foster (1977) seasonal autoregression, and a pooled XGBoost model. All share a
 information set available the day before each announcement. On the common sample of \NCommon{} forecasts, XGBoost
 lowers MAE by \dMAExgb\% and RMSE by \dRMSExgb\% relative to the SRW. It is the most accurate model by MAE in every
 year and beats the SRW for \FirmBetterxgb\% of firms. The firm-specific drift and Foster models are \emph{less}
-accurate than the SRW: short Chinese EPS histories cannot estimate the extra parameters precisely enough.
+accurate than the SRW: short Chinese EPS histories cannot estimate the extra parameters precisely enough. Each model
+also forecasts as early as its data allow (the SRW from FY\Firstrw, XGBoost from FY\Firstxgb). These earlier
+forecasts are saved but kept out of the comparison.
 \end{abstract}
 
 \section{Introduction and motivation}
@@ -78,8 +80,10 @@ a common share basis.
 They are used as given, which is conservative. Values with missing or impossible dates are never used, and identical
 values repeated across fiscal years are dropped.
 \end{itemize}
-Evaluation targets are all firm-quarters of FY2005Q1--FY2021Q1 (FY2021: Q1 only, since the panel ends in May 2021)
-announced within 365 days of quarter end. Table~\ref{tab:sample} reports coverage.
+Targets are all firm-quarters up to FY2021Q1 (FY2021: Q1 only, since the panel ends in May 2021) announced within
+365 days of quarter end. Each model forecasts every target its data requirements allow, so each has its own longest
+forecast period (\NTargetsAll{} targets in total). The model comparison uses the \NTargets{} targets of
+FY2005Q1--FY2021Q1. Table~\ref{tab:sample} reports coverage for both periods.
 
 \paragraph{Information order.} The fiscal order of quarters is not the order in which information arrives. Annual (Q4)
 and Q1 reports share an April 30 deadline, and the prior-year annual report was released on the \emph{same day} as
@@ -116,6 +120,9 @@ feasible from 2005, since Q1 and Q3 data are sparse before FY2002.
 \item \emph{XGBoost training and tuning.} XGBoost training rows are built ``as of'' their own announcement dates, and the
 training target is winsorized with training-set quantiles. Hyperparameters are re-tuned each January using only data
 available then: training targets announced in the previous year form the validation set, and earlier ones the fit set.
+For \XGBfallbackYears, too few earlier rows exist for this split (fewer than 500 fit or validation rows). Those
+forecasts therefore use fixed hyperparameters chosen a priori: the most regularized grid point (depth 2, minimum child
+weight 100, $\lambda=10$) with 200 trees. No forecast in the comparison period is affected.
 \end{itemize}
 
 Figure~\ref{fig:rolling-design} illustrates the design. ``Rolling'' means that, when the target advances by one
@@ -153,10 +160,31 @@ statistics on the quarterly mean differential with Newey--West errors \citep{die
 
 \begin{table}[!htbp]
 \centering\small
-\caption{Sample construction and model availability. A target is a firm-quarter announcement in FY2005Q1--FY2021Q1.
-M3's minimum of eight Foster pairs is the binding requirement for the common sample.}
+\caption{Sample construction and model availability. Panel A: comparison period, FY2005Q1--FY2021Q1; M3's minimum
+of eight Foster pairs is the binding requirement for the common sample. Panel B: all forecasts, with each model
+forecasting as early as its own requirements allow; ``First forecast'' is the earliest target fiscal quarter with a
+forecast. Percentages are relative to the targets of each panel.}
 \label{tab:sample}
 \input{../output/tables/tab1_sample.tex}
+\end{table}
+
+\paragraph{Forecasts before 2005.} The comparison starts in FY2005 so that all four models are evaluated over the
+same years. The forecast dataset nevertheless keeps every earlier forecast that the common rules allow
+(Table~\ref{tab:sample}, Panel B). The SRW's first forecast is for FY\Firstrw, but it has at least 100 forecasts a
+year only from FY\FirstBroadrw. Drift starts in FY\Firstrwd, Foster in FY\Firstfoster{} and XGBoost in FY\Firstxgb.
+Two features of the data cause these late starts. First, Q1 and Q3 EPS are sparse before FY2002, so year-over-year
+changes, which drift, Foster and XGBoost all need, barely exist before FY2003. Second, the backfilled dates make FY2002
+EPS appear public only after most FY2003 announcements. In total, \NPrerw{} SRW, \NPrerwd{} drift, \NPrefoster{}
+Foster and \NPrexgb{} XGBoost forecasts precede FY2005. Table~\ref{tab:early} reports their accuracy on each model's
+own sample. These early years are thin and not comparable across models.
+
+\begin{table}[!htbp]
+\centering\footnotesize
+\caption{Forecasts before the comparison period, fiscal years with at least 100 SRW forecasts. Each model is
+evaluated on its own forecasts; $\%\Delta$MAE compares it with the SRW on those same forecasts (shown when
+$N\geq30$). MAE in CNY per share. XGBoost forecasts in \XGBfallbackYears{} use fixed, untuned hyperparameters.}
+\label{tab:early}
+\input{../output/tables/tab7_early.tex}
 \end{table}
 
 \section{Overall results}
@@ -344,7 +372,8 @@ that investors anchor on naive seasonal comparisons.
 The analysis has limitations:
 \begin{itemize}
 \item EPS is adjusted retroactively for capital changes and may contain later restatements.
-\item Pre-2004 dates are backfilled, which conservatively shrinks early training data.
+\item Pre-2004 dates are backfilled. This conservatively shrinks early training data and leaves few forecasts before
+FY2004, which in any case lie outside the comparison.
 \item Same-day Q4/Q1 releases shorten the effective information set for a rising share of Q1 targets.
 \item The XGBoost grid is intentionally small; a richer model could change its accuracy but would not change the
 leakage-free design.
